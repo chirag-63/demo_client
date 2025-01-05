@@ -8,7 +8,7 @@ export const Navbar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
-        <div className="sticky top-1 mx-2 lg:mx-72 rounded-full px-7 z-50 h-12 lg:h-16 bg-zinc-900 flex justify-center items-center text-white">
+        <div className="sticky top-1 mx-2 lg:mx-72 rounded-full px-7 z-50 h-12 lg:h-14 bg-zinc-900 flex justify-center items-center text-white">
             <ul className="flex gap-16 md:gap-32">
                 <li>
                     <Link to={'/home'}>Home</Link>

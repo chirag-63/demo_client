@@ -1,18 +1,36 @@
 import {
     Sheet,
-    SheetClose,
     SheetContent,
-    SheetDescription,
-    SheetFooter,
     SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
-import { Button } from "./ui/button"
-import { UserCard } from "./userCard"
-
+    SheetTitle
+} from "@/components/ui/sheet";
+import { useEffect, useState } from "react";
+import { UserCard } from "./userCard";
+import axios from "axios";
 
 export function SideBar({ isSidebarOpen, onClose }) {
+    const [pendingRequest, setPendingRequest] = useState([]);
+
+    const handleRemoveRequest = (userId) => {
+        setPendingRequest((prev) => prev.filter((user) => user._id !== userId));
+    };
+    
+    useEffect(() => {
+        const getPendingRequests = async () => {
+            try {
+                const result = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/all/pending`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+                console.log(result.data.receivedRequests)
+                setPendingRequest(result.data.receivedRequests)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        getPendingRequests();
+    }, [])
 
     return (
         <Sheet open={isSidebarOpen} onOpenChange={onClose} >
@@ -24,17 +42,14 @@ export function SideBar({ isSidebarOpen, onClose }) {
                     </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col items-center gap-4 my-10">
-                    <UserCard request={true} />
-                    <UserCard request={true} />
-                    <UserCard request={true} />
-                    <UserCard request={true} />
-                    <UserCard request={true} />
-                    <UserCard request={true} />
-                    <UserCard request={true} />
-                    <UserCard request={true} />
-                    <UserCard request={true} />
-                    <UserCard request={true} />
-                    <UserCard request={true} />
+                    {pendingRequest.map(
+                        user => <UserCard
+                            key={user._id} 
+                            text={"Add"} 
+                            user={user} 
+                            request={true}
+                            onRequestHandled={handleRemoveRequest}
+                        />)}
                 </div>
             </SheetContent>
         </Sheet>
