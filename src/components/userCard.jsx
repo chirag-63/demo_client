@@ -12,13 +12,6 @@ export const UserCard = ({ text, request, user, onRequestHandled }) => {
     const buttonColor = requestStatus === "sent" ? "green" : "blue";
     const buttonText = requestStatus === "sent" ? "Sent" : "Add";
 
-    if (requestStatus === "sent") {
-
-    }
-    else if (requestStatus === '') {
-
-    }
-
     const handleAddFriend = async () => {
         try {
             await addFriend(user.username);
@@ -57,7 +50,9 @@ export const UserCard = ({ text, request, user, onRequestHandled }) => {
     }
 
     return (
-        <div className="w-full  flex hover:shadow-md hover:cursor-pointer hover:bg-gray-200 flex-shrink-0 justify-between border bg-gray-100 rounded-lg h-20 md:h-24 lg:h-28 items-center mx-2 px-4 lg:px-6">
+        <div className="w-full  flex hover:shadow-md hover:cursor-pointer
+         hover:bg-gray-200 flex-shrink-0 justify-between border bg-gray-100 rounded-lg 
+         h-20 md:h-24 lg:h-28 items-center mx-2 px-4 lg:px-6">
             <div className="flex gap-3 md:gap-4 lg:gap-6 items-center">
                 <img src="/account.png" alt="photo"
                     className="h-9 lg:h-12"
@@ -87,10 +82,10 @@ export const UserCard = ({ text, request, user, onRequestHandled }) => {
                         }
                         {buttonText}
                     </Button>
-                    : <Button 
+                    : <Button
                         onClick={handleRemoveFriend}
-                    className={`w-20 text-white bg-red-500 hover:bg-red-600 md:w-24 text-xs md:text-sm`} >
-                        <UserMinus/>
+                        className={`w-20 text-white bg-red-500 hover:bg-red-600 md:w-24 text-xs md:text-sm`} >
+                        <UserMinus />
                         Remove
                     </Button>
                 : <div className="flex gap-3">

@@ -5,7 +5,7 @@ import { Label } from "./ui/label"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 
-export const Signup = () => {
+export const Signup = ({setIsAuthenticated}) => {
     const navigate = useNavigate();
     const {
         register,
@@ -25,6 +25,7 @@ export const Signup = () => {
                 password: data.password
             })
             localStorage.setItem('token', result.data.token)
+            setIsAuthenticated(true)
             navigate('/home')
         } catch(error){
             const errorMessage = error?.response?.data?.message
@@ -68,14 +69,14 @@ export const Signup = () => {
                     {errors.username && <p className="text-red-500 text-sm ml-1 mt-1">{errors.username.message}</p>}
                 </div>
                 <div>
-                    <Label className='ml-1' htmlFor="password">Password{"* (mininum 8 char)"}</Label>
+                    <Label className='ml-1' htmlFor="password">Password{"*"}</Label>
                     <Input
                         className="h-10 mt-1 bg-white "
                         id="password"
                         type="password"
                         placeholder="your password here"
                         {...register("password", {
-                            required: "password is required"
+                            required: "password is required",
                         })}
                     />
                     {errors.password && <p className="text-red-500 text-sm ml-1 mt-1">{errors.password.message}</p>}

@@ -1,9 +1,11 @@
 import { Signup } from "@/components/signup";
 
-export default function SignupPage() {
-    return(
+export default function SignupPage({ setIsAuthenticated }) {
+    return (
         <div className="flex justify-center items-center h-screen">
-            <Signup/>
+            <Signup
+                setIsAuthenticated={setIsAuthenticated}
+            />
         </div>
     )
 }

@@ -5,7 +5,7 @@ import { Label } from "./ui/label"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 
-export const Login = () => {
+export const Login = ({setIsAuthenticated}) => {
     const navigate = useNavigate();
     const {
         register,
@@ -25,6 +25,7 @@ export const Login = () => {
                 password: data.password
             })
             localStorage.setItem('token', result.data.token)
+            setIsAuthenticated(true)
             navigate('/home')
         } catch(error){
             console.log(error)
