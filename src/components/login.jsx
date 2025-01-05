@@ -28,12 +28,28 @@ export const Login = ({setIsAuthenticated}) => {
             setIsAuthenticated(true)
             navigate('/home')
         } catch(error){
-            console.log(error)
             const errorMessage = error?.response?.data?.message
             console.log(errorMessage)
-            setError("root", {
-                message: errorMessage || "something went wrong!!"
-            })
+            if(errorMessage === 'Incorrect inputs'){
+                setError("root", {
+                    message: errorMessage + "please try again"
+                })
+            }
+            else if(errorMessage === 'No user exists with this username'){
+                setError("username", {
+                    message: errorMessage
+                })
+            }
+            else if(errorMessage === 'Incorrect password!'){
+                setError("password", {
+                    message: errorMessage
+                })
+            }
+            else {
+                setError("root", {
+                    message: errorMessage || "something went wrong!!"
+                })
+            }
         }
     };
 
@@ -51,7 +67,11 @@ export const Login = ({setIsAuthenticated}) => {
                         type="text"
                         placeholder="your unique username here"
                         {...register("username", {
-                            required: "username is required"
+                            required: "username is required",
+                            minLength: {
+                                value: 2,
+                                message: "username must have at least 2 characters",
+                            },
                         })}
                     />
                     {errors.username && <p className="text-red-500 text-sm ml-1 mt-1">{errors.username.message}</p>}
@@ -64,7 +84,11 @@ export const Login = ({setIsAuthenticated}) => {
                         type="password"
                         placeholder="your password here"
                         {...register("password", {
-                            required: "password is required"
+                            required: "password is required",
+                            minLength: {
+                                value: 6,
+                                message: "password must have at least 6 characters",
+                            },
                         })}
                     />
                     {errors.password && <p className="text-red-500 text-sm ml-1 mt-1">{errors.password.message}</p>}

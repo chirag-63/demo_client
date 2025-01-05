@@ -5,7 +5,7 @@ import { Label } from "./ui/label"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 
-export const Signup = ({setIsAuthenticated}) => {
+export const Signup = ({ setIsAuthenticated }) => {
     const navigate = useNavigate();
     const {
         register,
@@ -18,7 +18,7 @@ export const Signup = ({setIsAuthenticated}) => {
     } = useForm()
 
     const onSubmit = async (data) => {
-        try{
+        try {
             const result = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/signup`, {
                 name: data.name,
                 username: data.username,
@@ -27,12 +27,19 @@ export const Signup = ({setIsAuthenticated}) => {
             localStorage.setItem('token', result.data.token)
             setIsAuthenticated(true)
             navigate('/home')
-        } catch(error){
+        } catch (error) {
             const errorMessage = error?.response?.data?.message
             console.log(errorMessage)
-            setError("root", {
-                message: errorMessage || "something went wrong!!"
-            })
+            if (errorMessage === 'Username already taken') {
+                setError("username", {
+                    message: errorMessage
+                })
+            }
+            else {
+                setError("root", {
+                    message: errorMessage || "something went wrong!!"
+                })
+            }
         }
     };
 
@@ -50,7 +57,11 @@ export const Signup = ({setIsAuthenticated}) => {
                         type="text"
                         placeholder="your name here"
                         {...register("name", {
-                            required: "name is required"
+                            required: "name is required",
+                            minLength: {
+                                value: 1,
+                                message: "username must have at least 1 characters",
+                            },
                         })}
                     />
                     {errors.name && <p className="text-red-500 text-sm ml-1 mt-1">{errors.name.message}</p>}
@@ -63,7 +74,11 @@ export const Signup = ({setIsAuthenticated}) => {
                         type="text"
                         placeholder="your unique username here"
                         {...register("username", {
-                            required: "username is required"
+                            required: "username is required",
+                            minLength: {
+                                value: 2,
+                                message: "username must have at least 2 characters",
+                            },
                         })}
                     />
                     {errors.username && <p className="text-red-500 text-sm ml-1 mt-1">{errors.username.message}</p>}
@@ -77,6 +92,10 @@ export const Signup = ({setIsAuthenticated}) => {
                         placeholder="your password here"
                         {...register("password", {
                             required: "password is required",
+                            minLength: {
+                                value: 6,
+                                message: "Password must have at least 6 characters",
+                            },
                         })}
                     />
                     {errors.password && <p className="text-red-500 text-sm ml-1 mt-1">{errors.password.message}</p>}
@@ -88,7 +107,7 @@ export const Signup = ({setIsAuthenticated}) => {
             {errors.root && (<div className="text-red-500 text-center text-sm ml-1">{errors.root.message}</div>)}
 
             <div className="text-center text-sm border-t pt-4 border-black">
-                Already a user?  
+                Already a user?
                 <Link className="ml-1 hover:underline" to={"/login"}>
                     Login
                 </Link>
