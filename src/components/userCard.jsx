@@ -9,7 +9,7 @@ import { removeFriend } from "@/lib/removeFriend";
 export const UserCard = ({ text, request, user, onRequestHandled }) => {
     const [requestStatus, setRequestStatus] = useState(user.requestStatus || "none");
 
-    const buttonColor = requestStatus === "sent" ? "green" : "blue";
+    // const buttonColor = requestStatus === "sent" ? "green" : "blue";
     const buttonText = requestStatus === "sent" ? "Sent" : "Add";
 
     const handleAddFriend = async () => {
@@ -75,7 +75,11 @@ export const UserCard = ({ text, request, user, onRequestHandled }) => {
                             }
                         }
                         }
-                        className={`w-20 text-white bg-${buttonColor}-500 hover:bg-${buttonColor}-600 md:w-24 text-xs md:text-sm`}>
+                        className={`w-20 text-white 
+                            ${requestStatus === 'sent' ?
+                                'bg-green-500 hover:bg-green-500 hover:cursor-default' :
+                                'bg-blue-500 hover:bg-blue-600'} 
+                                md:w-24 text-xs md:text-sm`}>
                         {requestStatus === 'sent'
                             ? <></>
                             : <UserPlus />
@@ -84,7 +88,8 @@ export const UserCard = ({ text, request, user, onRequestHandled }) => {
                     </Button>
                     : <Button
                         onClick={handleRemoveFriend}
-                        className={`w-20 text-white bg-red-500 hover:bg-red-600 md:w-24 text-xs md:text-sm`} >
+                        className={`w-20 text-white bg-red-500 hover:bg-red-600 
+                            md:w-24 text-xs md:text-sm`} >
                         <UserMinus />
                         Remove
                     </Button>
