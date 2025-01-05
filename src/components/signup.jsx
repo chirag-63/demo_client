@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
+import { Loader2 } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 
@@ -45,8 +46,13 @@ export const Signup = ({ setIsAuthenticated }) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className=" w-[400px] gap-8 flex flex-col bg-gray-100 px-8 py-12 rounded-lg">
-            <div className="flex justify-center text-3xl font-bold font-sans">
-                Signup Form
+            <div>
+                <div className="flex justify-center text-3xl font-bold font-sans">
+                    Signup Form
+                </div>
+                <p className="text-center mt-1 text-xs">
+                    Note: It may take some time for the first time..
+                </p>
             </div>
             <div className="space-y-4 flex flex-col ">
                 <div>
@@ -102,7 +108,7 @@ export const Signup = ({ setIsAuthenticated }) => {
                 </div>
             </div>
             <Button type="submit" disabled={isSubmitting}>
-                Submit
+                {isSubmitting ? <Loader2 className="animate-spin " /> : "Signup"}
             </Button>
             {errors.root && (<div className="text-red-500 text-center text-sm ml-1">{errors.root.message}</div>)}
 

@@ -2,10 +2,11 @@ import { useForm } from "react-hook-form"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
+import { Loader2 } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 
-export const Login = ({setIsAuthenticated}) => {
+export const Login = ({ setIsAuthenticated }) => {
     const navigate = useNavigate();
     const {
         register,
@@ -19,7 +20,7 @@ export const Login = ({setIsAuthenticated}) => {
     } = useForm()
 
     const onSubmit = async (data) => {
-        try{
+        try {
             const result = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, {
                 username: data.username,
                 password: data.password
@@ -27,20 +28,20 @@ export const Login = ({setIsAuthenticated}) => {
             localStorage.setItem('token', result.data.token)
             setIsAuthenticated(true)
             navigate('/home')
-        } catch(error){
+        } catch (error) {
             const errorMessage = error?.response?.data?.message
             console.log(errorMessage)
-            if(errorMessage === 'Incorrect inputs'){
+            if (errorMessage === 'Incorrect inputs') {
                 setError("root", {
                     message: errorMessage + "please try again"
                 })
             }
-            else if(errorMessage === 'No user exists with this username'){
+            else if (errorMessage === 'No user exists with this username') {
                 setError("username", {
                     message: errorMessage
                 })
             }
-            else if(errorMessage === 'Incorrect password!'){
+            else if (errorMessage === 'Incorrect password!') {
                 setError("password", {
                     message: errorMessage
                 })
@@ -55,8 +56,15 @@ export const Login = ({setIsAuthenticated}) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className=" w-[400px] gap-8 flex flex-col bg-gray-100 px-8 py-12 rounded-lg">
-            <div className="flex justify-center text-3xl font-bold font-sans">
-                Login Form
+            <div>
+                <div className="flex justify-center text-3xl font-bold font-sans">
+                    Login Form
+                </div>
+                <p>
+                    <p className="text-center mt-1 text-xs">
+                        Note: It may take some time for the first time..
+                    </p>
+                </p>
             </div>
             <div className="space-y-4 flex flex-col ">
                 <div>
@@ -95,12 +103,12 @@ export const Login = ({setIsAuthenticated}) => {
                 </div>
             </div>
             <Button type="submit" disabled={isSubmitting}>
-                Submit
+                {isSubmitting ? <Loader2 className="animate-spin " /> : "Login"}
             </Button>
             {errors.root && (<div className="text-red-500 text-center text-sm ml-1">{errors.root.message}</div>)}
 
             <div className="text-center text-sm border-t pt-4 border-black">
-                Dont have an account?  
+                Dont have an account?
                 <Link className="ml-1 hover:underline" to={"/signup"}>
                     Signup
                 </Link>
