@@ -38,6 +38,9 @@ export default function HomePage() {
         <>
             <Navbar />
             <div className=" mx-2 mt-8 lg:mx-40 gap-10 flex flex-col items-center px-2">
+                <div className="font-semibold border-b-2 text-2xl lg:text-3xl">
+                    Make new friends
+                </div>
                 <div className="w-full lg:px-32 ">
                     <Input
                         onChange={(e) => setFilter(e.target.value)}

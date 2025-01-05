@@ -86,6 +86,9 @@ export default function ProfilePage() {
                     </div>
                 </div>
             </div>
+            <div className="font-semibold mt-10 text-center text-2xl lg:text-3xl">
+                Your friends List
+            </div>
             <div className=" mx-2 lg:mx-40 gap-10 flex flex-col items-center px-2">
                 <div className="w-full lg:px-32 lg:mt-4">
                     <Input
